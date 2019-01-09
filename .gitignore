@@ -1,6 +1,5 @@
 *.class
 *.txt
-*.mymetadata
 *.TXT
 *.log
 *.bak
@@ -10,7 +9,6 @@
 classes/
 Thumbs.db
 *.project
-yyptdasWeb/WEB-INF/lib/*
 bin/*
 .externalToolBuilders/
 logs/
@@ -19,7 +17,6 @@ target/
 *.iml
 /*.iml
 .jupiter
-/yyptweb/src/main/webapp/config/
 rebel.xml
 lib/
 *.json
