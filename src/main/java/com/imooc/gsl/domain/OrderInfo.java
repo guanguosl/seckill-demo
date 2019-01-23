@@ -3,6 +3,7 @@ package com.imooc.gsl.domain;
 import java.util.Date;
 
 public class OrderInfo {
+
 	private Long id;
 	private Long userId;
 	private Long goodsId;

@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 192.168.110.178_yypt5_sales
-Source Server Version : 50541
-Source Host           : 192.168.110.178:3306
-Source Database       : test
+Source Server         : localhost
+Source Server Version : 50639
+Source Host           : localhost:3306
+Source Database       : miaosha
 
 Target Server Type    : MYSQL
-Target Server Version : 50541
+Target Server Version : 50639
 File Encoding         : 65001
 
-Date: 2019-01-23 16:56:13
+Date: 2019-01-24 00:01:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -34,7 +34,7 @@ CREATE TABLE `goods` (
 -- Records of goods
 -- ----------------------------
 INSERT INTO `goods` VALUES ('1', 'iphoneX', '苹果iPhone X（全网通）', '/img/iphonex.png', '苹果iPhone X（全网通）', '6299.00', '10000');
-INSERT INTO `goods` VALUES ('2', 'mate10', '华为Mate 10 Pro（全网通）', '/img/mate10.png', '华为Mate 10 Pro（全网通）', '3599.00', '-1');
+INSERT INTO `goods` VALUES ('2', 'mate10', '华为Mate 10 Pro（全网通）', '/img/meta10.png', '华为Mate 10 Pro（全网通）', '3599.00', '-1');
 
 -- ----------------------------
 -- Table structure for miaosha_goods
@@ -54,23 +54,24 @@ CREATE TABLE `miaosha_goods` (
 -- Records of miaosha_goods
 -- ----------------------------
 INSERT INTO `miaosha_goods` VALUES ('1', '1', '0.01', '4', '2019-01-23 15:57:01', '2019-01-30 15:57:06');
-INSERT INTO `miaosha_goods` VALUES ('2', '2', '0.01', '9', '2019-01-23 15:57:01', '2019-01-30 15:57:06');
+INSERT INTO `miaosha_goods` VALUES ('2', '2', '0.01', '10', '2019-01-23 15:57:01', '2019-01-30 15:57:06');
 
 -- ----------------------------
--- Table structure for miaosha_order_info
+-- Table structure for miaosha_order
 -- ----------------------------
-DROP TABLE IF EXISTS `miaosha_order_info`;
-CREATE TABLE `miaosha_order_info` (
-  `id` bigint(20) NOT NULL COMMENT '商品ID',
+DROP TABLE IF EXISTS `miaosha_order`;
+CREATE TABLE `miaosha_order` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '商品ID',
   `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
   `order_id` bigint(20) DEFAULT NULL COMMENT '订单ID',
   `goods_id` bigint(20) DEFAULT NULL COMMENT '商品ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='秒杀订单表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='秒杀订单表';
 
 -- ----------------------------
--- Records of miaosha_order_info
+-- Records of miaosha_order
 -- ----------------------------
+INSERT INTO `miaosha_order` VALUES ('8', '15088695596', '1', '2');
 
 -- ----------------------------
 -- Table structure for miaosha_user
@@ -98,7 +99,7 @@ INSERT INTO `miaosha_user` VALUES ('15088695596', 'guanyl', 'b7797cce01b4b131b43
 -- ----------------------------
 DROP TABLE IF EXISTS `order_info`;
 CREATE TABLE `order_info` (
-  `id` bigint(20) NOT NULL COMMENT '商品ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '商品ID',
   `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
   `goods_id` bigint(20) DEFAULT NULL COMMENT '商品ID',
   `delivery_addr_id` bigint(20) DEFAULT NULL COMMENT '收货地址ID',
@@ -110,8 +111,16 @@ CREATE TABLE `order_info` (
   `create_date` datetime DEFAULT NULL COMMENT '订单创建时间',
   `pay_date` datetime DEFAULT NULL COMMENT '订单支付时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='订单表';
 
 -- ----------------------------
 -- Records of order_info
 -- ----------------------------
+INSERT INTO `order_info` VALUES ('2', '15088695596', '2', null, 'mate10', '1', '0.01', '1', '0', '2019-01-23 23:20:11', null);
+INSERT INTO `order_info` VALUES ('3', '15088695596', '2', null, 'mate10', '1', '0.01', '1', '0', '2019-01-23 23:23:31', null);
+INSERT INTO `order_info` VALUES ('4', '15088695596', '2', null, 'mate10', '1', '0.01', '1', '0', '2019-01-23 23:32:19', null);
+INSERT INTO `order_info` VALUES ('5', '15088695596', '2', null, 'mate10', '1', '0.01', '1', '0', '2019-01-23 23:33:19', null);
+INSERT INTO `order_info` VALUES ('6', '15088695596', '2', null, 'mate10', '1', '0.01', '1', '0', '2019-01-23 23:33:43', null);
+INSERT INTO `order_info` VALUES ('7', '15088695596', '2', null, 'mate10', '1', '0.01', '1', '0', '2019-01-23 23:39:28', null);
+INSERT INTO `order_info` VALUES ('8', '15088695596', '2', null, 'mate10', '1', '0.01', '1', '0', '2019-01-23 23:40:01', null);
+INSERT INTO `order_info` VALUES ('9', '15088695596', '2', null, 'mate10', '1', '0.01', '1', '0', '2019-01-23 23:42:37', null);
