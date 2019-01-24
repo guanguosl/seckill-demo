@@ -7,6 +7,7 @@ import com.imooc.gsl.util.RequestHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -44,16 +45,24 @@ public class MiaoshaUserArgumentResolver implements HandlerMethodArgumentResolve
         String cookieToken = this.getCookie();
         String paramToken = httpServletRequest.getParameter(MiaoshaUserConstants.COOKIE_NAME_TOKEN);
         if (StringUtils.isEmpty(cookieToken) && StringUtils.isEmpty(paramToken)) {
-            return "login";
+//            return "login";
+            return null;
         }
         String token = StringUtils.isEmpty(paramToken) ? cookieToken : paramToken;
         MiaoshaUser miaoshaUser = miaoshaUserService.getByToken(token);
+        if(ObjectUtils.isEmpty(miaoshaUser)){
+            return null;
+        }
         return miaoshaUser;
+
     }
 
     private String getCookie() {
         HttpServletRequest httpServletRequest = RequestHolder.getRequest();
         Cookie[] cookies = httpServletRequest.getCookies();
+        if (ObjectUtils.isEmpty(cookies)) {
+            return null;
+        }
         for (Cookie cookie : cookies) {
             if (MiaoshaUserConstants.COOKIE_NAME_TOKEN.equals(cookie.getName())) {
                 return cookie.getValue();
