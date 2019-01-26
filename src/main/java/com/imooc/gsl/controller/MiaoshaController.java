@@ -35,7 +35,15 @@ public class MiaoshaController {
 	
 	@Autowired
 	MiaoshaService miaoshaService;
-	
+
+	/**
+	 *
+	 * @param model
+	 * @param user
+	 * @param goodsId
+	 * @return
+	 */
+	// FIXME: 2019/1/27 高并发情况下出现秒杀库存小于0
     @RequestMapping("/do_miaosha")
     public String list(Model model, MiaoshaUser user,
 					   @RequestParam("goodsId")long goodsId) {
