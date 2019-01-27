@@ -13,8 +13,10 @@ import com.imooc.gsl.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -44,7 +46,7 @@ public class MiaoshaController {
 	 * @return
 	 */
 	// FIXME: 2019/1/27 高并发情况下出现秒杀库存小于0
-    @RequestMapping("/do_miaosha")
+    @RequestMapping(value = "/do_miaosha")
     public String list(Model model, MiaoshaUser user,
 					   @RequestParam("goodsId")long goodsId) {
     	model.addAttribute("user", user);

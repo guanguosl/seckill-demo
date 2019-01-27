@@ -10,7 +10,7 @@ import com.imooc.gsl.redis.MiaoshaUserKey;
 import com.imooc.gsl.redis.RedisService;
 import com.imooc.gsl.result.CodeMsg;
 import com.imooc.gsl.util.MD5Util;
-import com.imooc.gsl.util.RequestHolder;
+import com.imooc.gsl.util.RequestHolderUtil;
 import com.imooc.gsl.util.UUIDUtil;
 import com.imooc.gsl.vo.LoginVo;
 import org.apache.commons.lang3.StringUtils;
@@ -78,7 +78,7 @@ public class MiaoshaUserService {
     }
 
     private void addCookie(String token, MiaoshaUser user) {
-        HttpServletResponse response = RequestHolder.getResponse();
+        HttpServletResponse response = RequestHolderUtil.getResponse();
         redisService.set(MiaoshaUserKey.token, token, user);
         Cookie cookie = new Cookie(MiaoshaUserConstants.COOKIE_NAME_TOKEN, token);
         cookie.setMaxAge(MiaoshaUserKey.token.expireSeconds());

@@ -34,6 +34,7 @@ public class OrderService {
 		orderInfo.setStatus(0);
 		orderInfo.setUserId(user.getId());
 		long orderId = orderDao.insert(orderInfo);
+		// FIXME: 2019-1-27 为了避免同一用户重复购买，在该表中添加唯一索引，使其报错回滚
 		MiaoshaOrder miaoshaOrder = new MiaoshaOrder();
 		miaoshaOrder.setGoodsId(goods.getId());
 		miaoshaOrder.setOrderId(orderInfo.getId());

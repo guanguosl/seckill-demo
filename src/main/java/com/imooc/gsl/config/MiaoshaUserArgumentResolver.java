@@ -3,13 +3,12 @@ package com.imooc.gsl.config;
 import com.imooc.gsl.constants.MiaoshaUserConstants;
 import com.imooc.gsl.domain.MiaoshaUser;
 import com.imooc.gsl.service.MiaoshaUserService;
-import com.imooc.gsl.util.RequestHolder;
+import com.imooc.gsl.util.RequestHolderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -17,7 +16,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @auther guanyl on 2019-1-23.
@@ -58,7 +56,7 @@ public class MiaoshaUserArgumentResolver implements HandlerMethodArgumentResolve
     }
 
     private String getCookie() {
-        HttpServletRequest httpServletRequest = RequestHolder.getRequest();
+        HttpServletRequest httpServletRequest = RequestHolderUtil.getRequest();
         Cookie[] cookies = httpServletRequest.getCookies();
         if (ObjectUtils.isEmpty(cookies)) {
             return null;

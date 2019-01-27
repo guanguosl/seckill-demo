@@ -124,3 +124,8 @@ INSERT INTO `order_info` VALUES ('6', '15088695596', '2', null, 'mate10', '1', '
 INSERT INTO `order_info` VALUES ('7', '15088695596', '2', null, 'mate10', '1', '0.01', '1', '0', '2019-01-23 23:39:28', null);
 INSERT INTO `order_info` VALUES ('8', '15088695596', '2', null, 'mate10', '1', '0.01', '1', '0', '2019-01-23 23:40:01', null);
 INSERT INTO `order_info` VALUES ('9', '15088695596', '2', null, 'mate10', '1', '0.01', '1', '0', '2019-01-23 23:42:37', null);
+
+-- ----------------------------
+-- 创建唯一索引防止单用户多买，发生超卖情况
+-- ----------------------------
+CREATE UNIQUE INDEX user_goods_unique ON miaosha_order (user_id,goods_id);
