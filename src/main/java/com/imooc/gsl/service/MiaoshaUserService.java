@@ -12,7 +12,7 @@ import com.imooc.gsl.result.CodeMsg;
 import com.imooc.gsl.util.MD5Util;
 import com.imooc.gsl.util.RequestHolder;
 import com.imooc.gsl.util.UUIDUtil;
-import com.imooc.gsl.vo.LoginVo;
+import com.imooc.gsl.vo.LoginVVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,14 +51,14 @@ public class MiaoshaUserService {
     }
 
 
-    public String login(LoginVo loginVo) {
+    public String login(LoginVVo loginVVo) {
 
-        if (loginVo == null) {
+        if (loginVVo == null) {
             throw new GlobalException(CodeMsg.SERVER_ERROR);
         }
 
-        String mobile = loginVo.getMobile();
-        String formPass = loginVo.getPassword();
+        String mobile = loginVVo.getMobile();
+        String formPass = loginVVo.getPassword();
         //判断手机号是否存在
         MiaoshaUser user = getById(Long.parseLong(mobile));
         if (user == null) {

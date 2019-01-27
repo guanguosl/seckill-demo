@@ -3,7 +3,7 @@ package com.imooc.gsl.controller;
 import com.imooc.gsl.component.MobileValidatorComponent;
 import com.imooc.gsl.result.Result;
 import com.imooc.gsl.service.MiaoshaUserService;
-import com.imooc.gsl.vo.LoginVo;
+import com.imooc.gsl.vo.LoginVVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 /**
@@ -36,10 +35,10 @@ public class LoginController {
 
     @RequestMapping("/do_login")
     @ResponseBody
-    public Result<String> doLogin(@Valid LoginVo loginVo) {
-        log.info(loginVo.toString());
+    public Result<String> doLogin(@Valid LoginVVo loginVVo) {
+        log.info(loginVVo.toString());
         //登录
-        String token = userService.login( loginVo);
+        String token = userService.login(loginVVo);
         return Result.success(token);
     }
 
