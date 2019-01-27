@@ -56,6 +56,7 @@ public class GoodsController {
         //查询商品列表
         List<GoodsVo> goodsList = goodsService.listGoodsVo();
         model.addAttribute("goodsList", goodsList);
+//                return "goods_list";
         String html = redisService.get(GOODS_LIST, "goodsList", String.class);
         if (StringUtils.isEmpty(html)) {
             HttpServletRequest request = RequestHolderUtil.getRequest();
@@ -68,7 +69,6 @@ public class GoodsController {
             html = thymeleafViewResolver.getTemplateEngine().process("goods_list", springWebContext);
             redisService.set(GOODS_LIST, "goodsList", html);
         }
-        //        return "goods_list";
         return html;
     }
 
