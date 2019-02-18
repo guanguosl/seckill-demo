@@ -1,5 +1,7 @@
 package com.imooc.gsl.redis;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,8 @@ import redis.clients.jedis.JedisPool;
 
 @Service
 public class RedisService {
+
+	private static final Logger LOGGER= LoggerFactory.getLogger(RedisService.class);
 	
 	@Autowired
 	JedisPool jedisPool;
@@ -100,7 +104,24 @@ public class RedisService {
 			  returnToPool(jedis);
 		 }
 	}
-	
+
+
+	/**
+	 * 删除
+	 * */
+	public boolean delete(KeyPrefix prefix, String key) {
+		Jedis jedis = null;
+		try {
+			jedis =  jedisPool.getResource();
+			//生成真正的key
+			String realKey  = prefix.getPrefix() + key;
+			long ret =  jedis.del(realKey);
+			return ret > 0;
+		}finally {
+			returnToPool(jedis);
+		}
+	}
+
 	private <T> String beanToString(T value) {
 		if(value == null) {
 			return null;

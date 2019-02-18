@@ -7,4 +7,8 @@ public class GoodsKey extends BasePrefix{
 		super(expireSeconds, prefix);
 	}
 	public static GoodsKey GOODS_LIST = new GoodsKey(TOKEN_EXPIRE, "gl");
+	public static String GOODS_LIST_KEY="goodsList";
+
+	public static GoodsKey GOODS_DETAIL = new GoodsKey(TOKEN_EXPIRE, "gd");
+	public static String GOODS_DETAIL_KEY="goodsDetail";
 }

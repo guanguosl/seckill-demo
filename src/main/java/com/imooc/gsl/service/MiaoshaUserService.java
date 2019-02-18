@@ -16,13 +16,13 @@ import com.imooc.gsl.vo.LoginVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class MiaoshaUserService {
-
 
     @Autowired
     MiaoshaUserDao miaoshaUserDao;
@@ -34,9 +34,41 @@ public class MiaoshaUserService {
     MD5Component md5Component;
 
     public MiaoshaUser getById(long id) {
+        MiaoshaUser miaoshaUser = redisService.get(MiaoshaUserKey.user, String.valueOf(id), MiaoshaUser.class);
+        if (!ObjectUtils.isEmpty(miaoshaUser)) {
+            return miaoshaUser;
+        }
+        miaoshaUser = miaoshaUserDao.getById(id);
+        if (!ObjectUtils.isEmpty(miaoshaUser)) {
+            redisService.set(MiaoshaUserKey.user, String.valueOf(id), miaoshaUser);
+        }
         return miaoshaUserDao.getById(id);
     }
 
+    /**
+     * 更新密码
+     * @param token
+     *        token
+     *@param id
+     *        用户ID
+     * @param newPassword
+     *        新密码
+     * @return bool
+     */
+    public boolean updatePassword(String token, long id, String newPassword) {
+        MiaoshaUser miaoshaUser = this.getById(id);
+        if(ObjectUtils.isEmpty(miaoshaUser)){
+            throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
+        }
+        MiaoshaUser newMiaoshaUser=new MiaoshaUser();
+        newMiaoshaUser.setId(id);
+        newMiaoshaUser.setPassword(MD5Util.inputPassToDbPass(newPassword,miaoshaUser.getSalt()));
+        miaoshaUserDao.update(miaoshaUser);
+        redisService.delete(MiaoshaUserKey.user,String.valueOf(id));
+        miaoshaUser.setPassword(newMiaoshaUser.getPassword());
+        redisService.set(MiaoshaUserKey.token,String.valueOf(id),miaoshaUser);
+        return true;
+    }
 
     public MiaoshaUser getByToken(String token) {
         if (StringUtils.isEmpty(token)) {
@@ -49,7 +81,6 @@ public class MiaoshaUserService {
         }
         return user;
     }
-
 
     public String login(LoginVo loginVo) {
 
