@@ -2,9 +2,11 @@ package com.imooc.gsl.controller;
 
 import com.imooc.gsl.domain.MiaoshaUser;
 import com.imooc.gsl.redis.RedisService;
+import com.imooc.gsl.result.Result;
 import com.imooc.gsl.service.GoodsService;
 import com.imooc.gsl.service.MiaoshaUserService;
 import com.imooc.gsl.util.RequestHolderUtil;
+import com.imooc.gsl.vo.GoodsDetailVo;
 import com.imooc.gsl.vo.GoodsVo;
 import org.apache.catalina.util.RequestUtil;
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import org.thymeleaf.spring4.context.SpringWebContext;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static com.imooc.gsl.redis.GoodsKey.*;
@@ -83,9 +86,9 @@ public class GoodsController {
      * Pressure,无redis缓存 :thread=1000,loop=10,qps=814,avg=1008 --很快到达瓶颈
      * Pressure,无redis缓存 :thread=1000,loop=20,qps=736,avg=1162 --很快到达瓶颈
      */
-    @RequestMapping(value = "/to_detail/{goodsId}", produces = "text/html")
+    @RequestMapping(value = "/to_detail2/{goodsId}", produces = "text/html")
     @ResponseBody
-    public String detail(
+    public String detail2(
             Model model,
             MiaoshaUser user,
             @PathVariable("goodsId") long goodsId) {
@@ -127,6 +130,34 @@ public class GoodsController {
         html = thymeleafViewResolver.getTemplateEngine().process("goods_detail", springWebContext);
         redisService.set(GOODS_LIST, GOODS_DETAIL_KEY + goodsId, html);
         return html;
+    }
+
+    @RequestMapping(value="/detail/{goodsId}")
+    @ResponseBody
+    public Result<GoodsDetailVo> detail(MiaoshaUser user,
+                                        @PathVariable("goodsId")long goodsId) {
+        GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
+        long startAt = goods.getStartDate().getTime();
+        long endAt = goods.getEndDate().getTime();
+        long now = System.currentTimeMillis();
+        int miaoshaStatus = 0;
+        int remainSeconds = 0;
+        if(now < startAt ) {//秒杀还没开始，倒计时
+            miaoshaStatus = 0;
+            remainSeconds = (int)((startAt - now )/1000);
+        }else  if(now > endAt){//秒杀已经结束
+            miaoshaStatus = 2;
+            remainSeconds = -1;
+        }else {//秒杀进行中
+            miaoshaStatus = 1;
+            remainSeconds = 0;
+        }
+        GoodsDetailVo vo = new GoodsDetailVo();
+        vo.setGoods(goods);
+        vo.setUser(user);
+        vo.setRemainSeconds(remainSeconds);
+        vo.setMiaoshaStatus(miaoshaStatus);
+        return Result.success(vo);
     }
 
 }
