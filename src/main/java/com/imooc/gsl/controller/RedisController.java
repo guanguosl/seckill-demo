@@ -1,6 +1,6 @@
 package com.imooc.gsl.controller;
 
-import com.imooc.gsl.domain.UserDTO;
+import com.imooc.gsl.domain.User;
 import com.imooc.gsl.redis.RedisService;
 import com.imooc.gsl.redis.UserKey;
 import com.imooc.gsl.result.Result;
@@ -20,18 +20,18 @@ public class RedisController {
 
     @RequestMapping("/redis/get")
     @ResponseBody
-    public Result<UserDTO> getUser() {
-        UserDTO userDTO = redisService.get(UserKey.getById,"1",UserDTO.class);
-        return Result.success(userDTO);
+    public Result<User> getUser() {
+        User user = redisService.get(UserKey.getById,"1", User.class);
+        return Result.success(user);
     }
 
     @RequestMapping("/redis/set")
     @ResponseBody
     public Result<Boolean> setUser() {
-        UserDTO userDTO=new UserDTO();
-        userDTO.setId(1);
-        userDTO.setName("guanyl1");
-        redisService.set(UserKey.getById,"1",userDTO);
+        User user =new User();
+        user.setId(1);
+        user.setName("guanyl1");
+        redisService.set(UserKey.getById,"1", user);
         return Result.success(true);
     }
 

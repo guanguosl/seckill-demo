@@ -1,47 +1,115 @@
 package com.imooc.gsl.controller;
 
-import com.imooc.gsl.domain.UserDTO;
+import com.imooc.gsl.domain.MiaoshaUser;
+import com.imooc.gsl.domain.User;
+import com.imooc.gsl.rabbitmq.MQSender;
+import com.imooc.gsl.rabbitmq.MiaoshaMessage;
+import com.imooc.gsl.redis.RedisService;
+import com.imooc.gsl.redis.UserKey;
+import com.imooc.gsl.result.CodeMsg;
 import com.imooc.gsl.result.Result;
 import com.imooc.gsl.service.UserService;
-import com.imooc.gsl.util.UUIDUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
- * @auther guanyl on 2019-1-9.
- */
-//@RestControlle
 @Controller
 @RequestMapping("/demo")
 public class SampleController {
-    private static  final Logger LOGGER= LoggerFactory.getLogger(SampleController.class);
-    @Autowired
-    UserService userService;
 
-    @RequestMapping("/thymeleaf")
-    public String thymeleaf(Model model) {
-        model.addAttribute("name", "guanguosl");
+	@Autowired
+    UserService userService;
+	
+	@Autowired
+    RedisService redisService;
+
+	@Autowired
+    MQSender sender;
+	
+	@RequestMapping("/mq/header")
+    @ResponseBody
+    public Result<String> header() {
+		sender.sendHeader("hello,imooc");
+        return Result.success("Hello，world");
+    }
+//	
+	@RequestMapping("/mq/fanout")
+    @ResponseBody
+    public Result<String> fanout() {
+		sender.sendFanout("hello,imooc");
+        return Result.success("Hello，world");
+    }
+
+	@RequestMapping("/mq/topic")
+    @ResponseBody
+    public Result<String> topic() {
+		sender.sendTopic("hello,imooc");
+        return Result.success("Hello，world");
+    }
+//	
+	@RequestMapping("/mq")
+    @ResponseBody
+    public Result<String> mq() {
+        MiaoshaMessage miaoshaMessage=new MiaoshaMessage();
+        miaoshaMessage.setGoodsId(1);
+        MiaoshaUser miaoshaUser=new MiaoshaUser();
+        miaoshaUser.setId(15088695596L);
+        miaoshaMessage.setUser(miaoshaUser);
+		sender.sendMiaoshaMessage(miaoshaMessage);
+        return Result.success("Hello，world");
+    }
+	
+    @RequestMapping("/hello")
+    @ResponseBody
+    public Result<String> home() {
+        return Result.success("Hello，world");
+    }
+    
+    @RequestMapping("/error")
+    @ResponseBody
+    public Result<String> error() {
+        return Result.error(CodeMsg.SESSION_ERROR);
+    }
+    
+    @RequestMapping("/hello/themaleaf")
+    public String themaleaf(Model model) {
+        model.addAttribute("name", "Joshua");
         return "hello";
     }
-
+    
     @RequestMapping("/db/get")
     @ResponseBody
-    public Result<UserDTO> getUser() {
-        UserDTO userDTO = userService.getUser(1);
-        return Result.success(userDTO);
+    public Result<User> dbGet() {
+        User user = userService.getUser(1);
+        return Result.success(user);
     }
-
+    
+    
     @RequestMapping("/db/tx")
     @ResponseBody
-    public Result<Boolean> tx() {
-//        userService.tx();
-        String uuid= UUIDUtil.uuid();
-        LOGGER.info("uuid:{}",uuid);
+    public Result<Boolean> dbTx() {
+    	userService.tx();
         return Result.success(true);
     }
+    
+//    @RequestMapping("/redis/get")
+//    @ResponseBody
+//    public Result<User> redisGet() {
+//    	User  user  = redisService.get(UserKey.getById, ""+1, User.class);
+//        return Result.success(user);
+//    }
+    
+//    @RequestMapping("/redis/set")
+//    @ResponseBody
+//    public Result<Boolean> redisSet() {
+//    	User user  = new User();
+//    	user.setId(1);
+//    	user.setName("1111");
+//    	redisService.set(UserKey.getById, ""+1, user);//UserKey:id1
+//        return Result.success(true);
+//    }
+    
+    
 }

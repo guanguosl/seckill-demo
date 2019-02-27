@@ -24,9 +24,10 @@ public class MobileValidatorComponent {
     // FIXME: 2019/1/16 自测是非常必要的，要严谨
 
     @Test
-    public void isMobileTest(){
-        System.out.println(isMobile("15088695596"));
-        System.out.println(isMobile("2508869559"));
+    public void isMobileTest() throws NoSuchFieldException {
+        throw new NoSuchFieldException();
+//        System.out.println(isMobile("15088695596"));
+//        System.out.println(isMobile("2508869559"));
     }
 
 

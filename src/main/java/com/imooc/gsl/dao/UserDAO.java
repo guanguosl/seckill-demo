@@ -1,6 +1,6 @@
 package com.imooc.gsl.dao;
 
-import com.imooc.gsl.domain.UserDTO;
+import com.imooc.gsl.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -12,8 +12,8 @@ import org.apache.ibatis.annotations.Select;
 public interface UserDAO {
 
     @Select("select * from user t where t.id=#{id}")
-    UserDTO getUserById(@Param("id") int id);
+    User getUserById(@Param("id") int id);
 
     @Select("insert into user(id,name)values(#{id},#{name})")
-    int insert(UserDTO userDTO);
+    int insert(User user);
 }

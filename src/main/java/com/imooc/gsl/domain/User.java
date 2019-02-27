@@ -3,7 +3,7 @@ package com.imooc.gsl.domain;
 /**
  * @auther guanyl on 2019-1-9.
  */
-public class UserDTO {
+public class User {
     private int id;
     private String name;
 
