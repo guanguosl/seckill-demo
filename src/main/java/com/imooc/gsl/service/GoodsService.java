@@ -11,24 +11,24 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GoodsService {
-	
-	@Autowired
-	GoodsDao goodsDao;
-	
-	public List<GoodsVo> listGoodsVo(){
-		return goodsDao.listGoodsVo();
-	}
 
-	public GoodsVo getGoodsVoByGoodsId(long goodsId) {
-		return goodsDao.getGoodsVoByGoodsId(goodsId);
-	}
+    @Autowired
+    GoodsDao goodsDao;
 
-	public void reduceStock(GoodsVo goods) {
-		MiaoshaGoods g = new MiaoshaGoods();
-		g.setGoodsId(goods.getId());
-		goodsDao.reduceStock(g);
-	}
-	
-	
-	
+    public List<GoodsVo> listGoodsVo() {
+        return goodsDao.listGoodsVo();
+    }
+
+    public GoodsVo getGoodsVoByGoodsId(long goodsId) {
+        return goodsDao.getGoodsVoByGoodsId(goodsId);
+    }
+
+    public boolean reduceStock(GoodsVo goods) {
+        MiaoshaGoods g = new MiaoshaGoods();
+        g.setGoodsId(goods.getId());
+        int count = goodsDao.reduceStock(g);
+        return count > 0;
+    }
+
+
 }

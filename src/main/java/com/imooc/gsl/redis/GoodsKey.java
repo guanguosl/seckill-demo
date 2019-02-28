@@ -11,4 +11,7 @@ public class GoodsKey extends BasePrefix{
 
 	public static GoodsKey GOODS_DETAIL = new GoodsKey(TOKEN_EXPIRE, "gd");
 	public static String GOODS_DETAIL_KEY="goodsDetail";
+
+	public static GoodsKey GOODS_STOCK = new GoodsKey(0,"gs");
+	public static String GOODS_STOCK_KEY="goodsStock";
 }
