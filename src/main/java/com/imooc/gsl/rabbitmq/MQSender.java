@@ -19,7 +19,7 @@ public class MQSender {
 	
 	public void sendMiaoshaMessage(MiaoshaMessage mm) {
 		String msg = RedisService.beanToString(mm);
-		log.info("send message:"+msg);
+//		log.info("send message:{}",msg);
 		amqpTemplate.convertAndSend(MQConfig.MIAOSHA_QUEUE, msg);
 	}
 	

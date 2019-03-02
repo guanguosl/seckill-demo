@@ -34,7 +34,7 @@ public class MQReceiver {
 
     @RabbitListener(queues = MQConfig.MIAOSHA_QUEUE)
     public void receive(String message) {
-        log.info("receive message:" + message);
+//        log.info("receive message {}" , message);
         try {
             MiaoshaMessage mm = RedisService.stringToBean(message, MiaoshaMessage.class);
             MiaoshaUser user = mm.getUser();

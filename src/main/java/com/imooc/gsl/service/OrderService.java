@@ -24,7 +24,7 @@ public class OrderService {
 
     public MiaoshaOrder getMiaoshaOrderByUserIdGoodsId(long userId, long goodsId) {
 //		return orderDao.getMiaoshaOrderByUserIdGoodsId(userId, goodsId);
-        return redisService.get(OrderKey.getMiaoShaOrderByUidGid, "" + userId + "" + goodsId, MiaoshaOrder.class);
+        return redisService.get(OrderKey.getMiaoshaOrderByUidGid, "" + userId + "" + goodsId, MiaoshaOrder.class);
     }
 
     public OrderInfo getOrderById(long orderId) {
@@ -51,8 +51,12 @@ public class OrderService {
         miaoshaOrder.setUserId(user.getId());
         orderDao.insertMiaoshaOrder(miaoshaOrder);
         //订单存入缓存
-        redisService.set(OrderKey.getMiaoShaOrderByUidGid, "" + user.getId() + "" + goods.getId(), miaoshaOrder);
+        redisService.set(OrderKey.getMiaoshaOrderByUidGid, "" + user.getId() + "" + goods.getId(), miaoshaOrder);
         return orderInfo;
     }
 
+    public void deleteOrders() {
+        orderDao.deleteOrders();
+        orderDao.deleteMiaoshaOrders();
+    }
 }

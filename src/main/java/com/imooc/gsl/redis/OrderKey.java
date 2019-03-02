@@ -6,6 +6,6 @@ public class OrderKey extends BasePrefix {
         super(  prefix);
     }
 
-    public static OrderKey getMiaoShaOrderByUidGid =new OrderKey("moug");
+    public static OrderKey getMiaoshaOrderByUidGid =new OrderKey("moug");
 
 }
